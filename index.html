@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="obsidiana">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gastos Jolgorio">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1115" id="metaTema">
+<title>Gastos Jolgorio</title>
+<style>
+:root{--bg:#0f1115;--card:#181b22;--card2:#20242d;--text:#eef0f4;--muted:#8d95a5;--accent:#f5a524;--accent-text:#1a1200;--border:#2b303b;--ok:#3ecf8e;--warn:#f5a524;--danger:#ef5350}
+[data-tema="oceano"]{--bg:#0a1a2b;--card:#10263d;--card2:#17334f;--text:#e8f3ff;--muted:#86a3bf;--accent:#38bdf8;--accent-text:#031826;--border:#1f405f}
+[data-tema="bosque"]{--bg:#0d1a14;--card:#142a20;--card2:#1b3829;--text:#e6f5ec;--muted:#8aab98;--accent:#4ade80;--accent-text:#03170b;--border:#25452f}
+[data-tema="amanecer"]{--bg:#fff7ee;--card:#ffffff;--card2:#fdeedd;--text:#2a1d12;--muted:#8a7058;--accent:#e8590c;--accent-text:#ffffff;--border:#f0d9c2;--ok:#2b9a5f;--warn:#d9780b;--danger:#d63a36}
+[data-tema="violeta"]{--bg:#14101f;--card:#1e1830;--card2:#291f42;--text:#f1ecff;--muted:#9d90bd;--accent:#a78bfa;--accent-text:#150a33;--border:#37294f}
+[data-tema="grafito"]{--bg:#17181a;--card:#222426;--card2:#2c2f32;--text:#ececec;--muted:#999;--accent:#d4d4d4;--accent-text:#111;--border:#35383b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,Helvetica,Arial,sans-serif;font-size:16px}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--border);padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:10px}
+header h1{font-size:17px;margin:0;flex:1;line-height:1.1}
+header small{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:2px}
+header select{width:auto;padding:7px 8px;font-size:13px;border-radius:9px}
+main{padding:14px;max-width:640px;margin:0 auto}
+h2{font-size:18px;margin:4px 0 12px}
+h3{font-size:14px;margin:18px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+label,.lbl{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px}
+input,select{width:100%;padding:12px;font-size:16px;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:11px;outline:none;font-family:inherit;-webkit-appearance:none;appearance:none}
+input:focus,select:focus{border-color:var(--accent)}
+input[type=checkbox]{width:24px;height:24px;padding:0;accent-color:var(--accent);flex:none}
+.btn{display:block;width:100%;padding:14px;margin-top:16px;font-size:16px;font-weight:600;border:0;border-radius:12px;background:var(--accent);color:var(--accent-text);text-align:center;cursor:pointer;font-family:inherit}
+.btn.sec{background:var(--card2);color:var(--text);border:1px solid var(--border)}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+.btn.sm{padding:10px;font-size:14px;margin-top:8px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.seg{display:flex;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:3px;gap:3px}
+.seg button{flex:1;padding:11px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:15px;font-weight:600;font-family:inherit}
+.seg button.on{background:var(--accent);color:var(--accent-text)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;font-family:inherit}
+.chip.on{background:var(--accent);color:var(--accent-text);border-color:var(--accent);font-weight:600}
+.fotoBox{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fotoBox img{width:84px;height:84px;object-fit:cover;border-radius:10px;border:1px solid var(--border)}
+.fotoBox .btn{margin:0;width:auto;flex:1;min-width:160px;position:relative;overflow:hidden}
+.fotoBox input[type=file]{position:absolute;inset:0;opacity:0;width:100%;height:100%}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.stat.big{grid-column:1/-1}
+.stat b{display:block;font-size:19px;margin-top:2px}
+.stat span{font-size:12px;color:var(--muted)}
+.item{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 12px;margin-bottom:8px}
+.item .info{flex:1;min-width:0}
+.item .l1{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.item .l1 .p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .l2{font-size:12px;color:var(--muted);margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;background:var(--card2);color:var(--text)}
+.tag.ok{background:color-mix(in srgb,var(--ok) 22%,transparent);color:var(--ok)}
+.tag.no{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.vacio{text-align:center;color:var(--muted);padding:30px 10px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;padding:9px 0 8px;border:0;background:transparent;color:var(--muted);font-size:11px;font-family:inherit}
+nav button i{display:block;font-style:normal;font-size:22px;margin-bottom:1px}
+nav button.on{color:var(--accent);font-weight:600}
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));border:1px solid var(--border)}
+.sheet img.foto{width:100%;border-radius:10px;margin-top:10px;border:1px solid var(--border)}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
+.kv span:first-child{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:20px;font-size:14px;z-index:99;max-width:88%;text-align:center}
+.lista-mini{display:flex;flex-wrap:wrap;gap:6px}
+.mini{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:6px 6px 6px 12px;font-size:14px}
+.mini button{border:0;background:var(--card2);color:var(--muted);width:24px;height:24px;border-radius:50%;font-size:14px;line-height:1;padding:0}
+.nota{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4}
+</style>
+</head>
+<body>
+<header>
+  <h1>Gastos Jolgorio<small>Programador: SRM</small></h1>
+  <select id="selTema" aria-label="Tema">
+    <option value="obsidiana">Obsidiana</option><option value="oceano">Océano</option><option value="bosque">Bosque</option>
+    <option value="amanecer">Amanecer</option><option value="violeta">Violeta</option><option value="grafito">Grafito</option>
+  </select>
+</header>
+
+<main>
+<!-- REGISTRAR -->
+<section id="v-reg" class="view">
+  <h2 id="regTitulo">Nueva compra</h2>
+  <label for="fFecha">Fecha</label>
+  <input type="date" id="fFecha">
+  <label for="fProv">Punto de abastecimiento</label>
+  <input type="text" id="fProv" list="dlProv" autocomplete="off" autocapitalize="words" placeholder="Ej. Costco, Central de Abastos">
+  <datalist id="dlProv"></datalist>
+  <label for="fTotal">Total de la compra</label>
+  <input type="text" id="fTotal" inputmode="decimal" placeholder="0.00">
+  <div class="lbl">¿Facturó?</div>
+  <div class="seg" id="segFact"><button data-v="1">Sí</button><button data-v="0" class="on">No</button></div>
+  <div class="lbl">Forma de pago</div>
+  <div class="seg" id="segPago"><button data-v="efectivo" class="on">Efectivo</button><button data-v="tarjeta">Tarjeta</button></div>
+  <div id="boxTarjeta" hidden>
+    <div class="lbl">¿Con qué tarjeta?</div>
+    <div class="chips" id="chipsTarjeta"></div>
+  </div>
+  <div class="lbl">Foto del ticket o factura</div>
+  <div class="fotoBox">
+    <img id="fPrev" alt="Vista previa" hidden>
+    <div class="btn sec" id="btnFoto">📷 Tomar o elegir foto<input type="file" accept="image/*" id="fFoto"></div>
+    <button class="btn ghost sm" id="fQuitar" hidden style="width:auto;margin:0">Quitar</button>
+  </div>
+  <label for="fNota">Nota (opcional)</label>
+  <input type="text" id="fNota" placeholder="Ej. dulces y globos">
+  <button class="btn" id="fGuardar">Guardar compra</button>
+  <button class="btn ghost" id="fCancelar" hidden>Cancelar edición</button>
+</section>
+
+<!-- COMPRAS -->
+<section id="v-lis" class="view" hidden>
+  <h2>Compras</h2>
+  <div class="row">
+    <div><label for="lMes" style="margin-top:0">Mes</label><input type="month" id="lMes"></div>
+    <div><label for="lPago" style="margin-top:0">Pago</label><select id="lPago"></select></div>
+  </div>
+  <div class="row">
+    <div><label for="lFac">Factura</label><select id="lFac"><option value="todas">Todas</option><option value="con">Con factura</option><option value="sin">Sin factura</option></select></div>
+    <div><label for="lQ">Buscar</label><input type="search" id="lQ" placeholder="Proveedor o nota"></div>
+  </div>
+  <button class="btn ghost sm" id="lTodo">Ver todos los meses</button>
+  <div class="stats" id="lStats"></div>
+  <div id="lLista"></div>
+  <div class="row">
+    <button class="btn sec sm" id="lCsv">⬇︎ Exportar CSV</button>
+    <button class="btn sec sm" id="lFotos">🖼 Exportar fotos</button>
+  </div>
+</section>
+
+<!-- CUADRE -->
+<section id="v-cua" class="view" hidden>
+  <h2>Cuadre por tarjeta</h2>
+  <label for="cTarjeta" style="margin-top:0">Tarjeta</label>
+  <select id="cTarjeta"></select>
+  <div class="row">
+    <div><label for="cDesde">Desde</label><input type="date" id="cDesde"></div>
+    <div><label for="cHasta">Hasta</label><input type="date" id="cHasta"></div>
+  </div>
+  <label for="cEstado">Total del estado de cuenta (opcional)</label>
+  <input type="text" id="cEstado" inputmode="decimal" placeholder="Para comparar contra lo registrado">
+  <div class="stats" id="cStats"></div>
+  <div class="nota" style="margin:0 0 10px">Marca cada compra que ya encontraste en el estado de cuenta.</div>
+  <div id="cLista"></div>
+  <button class="btn sec sm" id="cCsv">⬇︎ Exportar CSV de este cuadre</button>
+</section>
+
+<!-- AJUSTES -->
+<section id="v-aju" class="view" hidden>
+  <h2>Ajustes</h2>
+  <h3>Tarjetas del negocio</h3>
+  <div class="lista-mini" id="aTarjetas"></div>
+  <div class="row" style="margin-top:10px"><input type="text" id="aNuevaTarjeta" placeholder="Nueva tarjeta"><button class="btn sec sm" id="aAddTarjeta" style="margin:0;flex:none;width:90px">Agregar</button></div>
+  <h3>Puntos de abastecimiento frecuentes</h3>
+  <div class="lista-mini" id="aProvs"></div>
+  <div class="row" style="margin-top:10px"><input type="text" id="aNuevoProv" placeholder="Nuevo punto"><button class="btn sec sm" id="aAddProv" style="margin:0;flex:none;width:90px">Agregar</button></div>
+  <div class="nota">Los puntos donde ya registraste compras aparecen solos como sugerencia al escribir.</div>
+  <h3>Respaldo</h3>
+  <button class="btn sm" id="aBackup">Guardar respaldo (con fotos)</button>
+  <label class="btn sec sm" style="position:relative;overflow:hidden;color:var(--text);font-size:14px;margin-top:8px">Restaurar respaldo
+    <input type="file" id="aRestore" accept=".json,application/json" style="position:absolute;inset:0;opacity:0;width:100%;height:100%">
+  </label>
+  <div class="nota">Los datos viven solo en este teléfono. Haz un respaldo cada semana y guárdalo en Archivos o iCloud Drive.</div>
+  <h3>Almacenamiento</h3>
+  <div class="nota" id="aInfo" style="font-size:14px"></div>
+</section>
+</main>
+
+<nav>
+  <button data-v="reg" class="on"><i>✏️</i>Registrar</button>
+  <button data-v="lis"><i>🧾</i>Compras</button>
+  <button data-v="cua"><i>✅</i>Cuadre</button>
+  <button data-v="aju"><i>⚙️</i>Ajustes</button>
+</nav>
+
+<div class="overlay" id="ov" hidden><div class="sheet" id="sheet"></div></div>
+
+<script>
+'use strict';
+/* ================= Utilidades ================= */
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const hoy=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());};
+const fmt=n=>(n||0).toLocaleString('es-MX',{style:'currency',currency:'MXN'});
+const fdate=s=>{const p=String(s).split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:s;};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const parseMonto=v=>{const n=parseFloat(String(v).replace(/[$,\s]/g,''));return isFinite(n)?Math.round(n*100)/100:NaN;};
+const slug=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,30)||'compra';
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200);}
+
+/* ================= Configuración ================= */
+const CFG_DEF=()=>({tarjetas:['Banamex','Banorte','Klar','Plata'],proveedores:[],tema:'obsidiana'});
+let cfg=(()=>{try{return Object.assign(CFG_DEF(),JSON.parse(localStorage.getItem('jg_cfg')||'{}'));}catch(e){return CFG_DEF();}})();
+const saveCfg=()=>{try{localStorage.setItem('jg_cfg',JSON.stringify(cfg));}catch(e){}};
+function aplicarTema(){
+  document.documentElement.dataset.tema=cfg.tema;
+  $('#selTema').value=cfg.tema;
+  const bg=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+  $('#metaTema').setAttribute('content',bg||'#0f1115');
+}
+
+/* ================= IndexedDB ================= */
+let db;
+function openDB(){return new Promise((res,rej)=>{
+  const r=indexedDB.open('jolgorio_gastos',1);
+  r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore('compras',{keyPath:'id'});d.createObjectStore('fotos',{keyPath:'id'});};
+  r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);
+});}
+const rq=(store,mode,fn)=>new Promise((res,rej)=>{
+  const t=db.transaction(store,mode);const s=t.objectStore(store);const r=fn(s);
+  t.oncomplete=()=>res(r&&r.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error);
+});
+const dbAll=st=>rq(st,'readonly',s=>s.getAll());
+const dbGet=(st,id)=>rq(st,'readonly',s=>s.get(id));
+const dbPut=(st,o)=>rq(st,'readwrite',s=>s.put(o));
+const dbDel=(st,id)=>rq(st,'readwrite',s=>s.delete(id));
+const dbClear=st=>rq(st,'readwrite',s=>s.clear());
+
+/* ================= Estado ================= */
+let compras=[];
+const F={factura:false,pago:'efectivo',tarjeta:'',foto:null,fotoCambio:false,editId:null};
+const C={tarjeta:'',desde:'',hasta:'',estado:''};
+function ordenar(){compras.sort((a,b)=>b.fecha.localeCompare(a.fecha)||(b.creado||0)-(a.creado||0));}
+async function cargar(){compras=await dbAll('compras');ordenar();}
+const nombreFoto=c=>c.fecha+'_'+slug(c.proveedor)+'_'+c.total.toFixed(2)+'_'+c.id.slice(-4)+'.jpg';
+function proveedores(){
+  const s=new Set(cfg.proveedores);compras.forEach(c=>s.add(c.proveedor));
+  return [...s].sort((a,b)=>a.localeCompare(b,'es'));
+}
+
+/* ================= Navegación ================= */
+function ir(v){
+  $$('.view').forEach(e=>e.hidden=e.id!=='v-'+v);
+  $$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  if(v==='lis')renderLista();
+  if(v==='cua')renderCuadre();
+  if(v==='aju')renderAjustes();
+  window.scrollTo(0,0);
+}
+$('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)ir(b.dataset.v);});
+
+/* ================= Registrar ================= */
+function renderForm(){
+  $('#dlProv').innerHTML=proveedores().map(p=>'<option value="'+esc(p)+'">').join('');
+  $$('#segFact button').forEach(b=>b.classList.toggle('on',(b.dataset.v==='1')===F.factura));
+  $$('#segPago button').forEach(b=>b.classList.toggle('on',b.dataset.v===F.pago));
+  $('#boxTarjeta').hidden=F.pago!=='tarjeta';
+  $('#chipsTarjeta').innerHTML=cfg.tarjetas.map(t=>'<button type="button" class="chip'+(F.tarjeta===t?' on':'')+'" data-t="'+esc(t)+'">'+esc(t)+'</button>').join('');
+  $('#fPrev').hidden=!F.foto;
+  if(F.foto)$('#fPrev').src=F.foto;
+  $('#fQuitar').hidden=!F.foto;
+  $('#regTitulo').textContent=F.editId?'Editar compra':'Nueva compra';
+  $('#fGuardar').textContent=F.editId?'Guardar cambios':'Guardar compra';
+  $('#fCancelar').hidden=!F.editId;
+}
+function limpiarForm(){
+  Object.assign(F,{factura:false,pago:'efectivo',tarjeta:'',foto:null,fotoCambio:false,editId:null});
+  $('#fFecha').value=hoy();$('#fProv').value='';$('#fTotal').value='';$('#fNota').value='';$('#fFoto').value='';
+  renderForm();
+}
+$('#segFact').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;F.factura=b.dataset.v==='1';renderForm();});
+$('#segPago').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;F.pago=b.dataset.v;if(F.pago==='efectivo')F.tarjeta='';renderForm();});
+$('#chipsTarjeta').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;F.tarjeta=b.dataset.t;renderForm();});
+
+function comprimir(file,max=1600,q=0.78){return new Promise((res,rej)=>{
+  const url=URL.createObjectURL(file);const img=new Image();
+  img.onload=()=>{
+    let w=img.naturalWidth,h=img.naturalHeight;const k=Math.min(1,max/Math.max(w,h));
+    w=Math.round(w*k);h=Math.round(h*k);
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);
+    URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',q));
+  };
+  img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('No se pudo leer la imagen'));};
+  img.src=url;
+});}
+$('#fFoto').addEventListener('change',async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{F.foto=await comprimir(f);F.fotoCambio=true;renderForm();}
+  catch(err){toast('No pude leer esa foto, intenta de nuevo');}
+  e.target.value='';
+});
+$('#fQuitar').addEventListener('click',()=>{F.foto=null;F.fotoCambio=true;renderForm();});
+
+$('#fGuardar').addEventListener('click',async()=>{
+  const prov=$('#fProv').value.trim();
+  const total=parseMonto($('#fTotal').value);
+  if(!prov)return toast('Falta el punto de abastecimiento');
+  if(!(total>0))return toast('Falta el total de la compra');
+  if(F.pago==='tarjeta'&&!F.tarjeta)return toast('Elige con qué tarjeta pagaste');
+  const base=F.editId?compras.find(c=>c.id===F.editId):null;
+  const c={
+    id:base?base.id:uid(),
+    fecha:$('#fFecha').value||hoy(),
+    proveedor:prov,total:total,factura:F.factura,pago:F.pago,
+    tarjeta:F.pago==='tarjeta'?F.tarjeta:'',
+    nota:$('#fNota').value.trim(),
+    tieneFoto:!!F.foto,
+    cuadrada:(base&&F.pago==='tarjeta')?!!base.cuadrada:false,
+    creado:base?base.creado:Date.now()
+  };
+  try{
+    await dbPut('compras',c);
+    if(F.fotoCambio){if(F.foto)await dbPut('fotos',{id:c.id,data:F.foto});else await dbDel('fotos',c.id);}
+  }catch(err){return toast('No se pudo guardar (¿almacenamiento lleno?)');}
+  const editaba=!!F.editId;
+  await cargar();limpiarForm();
+  toast(editaba?'Cambios guardados':'Compra guardada');
+  if(editaba)ir('lis');
+});
+$('#fCancelar').addEventListener('click',()=>{limpiarForm();ir('lis');});
+
+async function editar(id){
+  const c=compras.find(x=>x.id===id);if(!c)return;
+  const f=c.tieneFoto?await dbGet('fotos',id):null;
+  Object.assign(F,{factura:c.factura,pago:c.pago,tarjeta:c.tarjeta||'',foto:f?f.data:null,fotoCambio:false,editId:id});
+  $('#fFecha').value=c.fecha;$('#fProv').value=c.proveedor;$('#fTotal').value=c.total;$('#fNota').value=c.nota||'';
+  cerrarSheet();renderForm();ir('reg');
+}
+
+/* ================= Compras (lista) ================= */
+function opcionesPago(sel,primera){
+  sel.innerHTML='<option value="todos">'+primera+'</option><option value="efectivo">Efectivo</option>'+cfg.tarjetas.map(t=>'<option value="'+esc(t)+'">'+esc(t)+'</option>').join('');
+}
+function filtrar(){
+  const mes=$('#lMes').value,pago=$('#lPago').value,fac=$('#lFac').value,q=$('#lQ').value.trim().toLowerCase();
+  return compras.filter(c=>
+    (!mes||c.fecha.startsWith(mes))&&
+    (pago==='todos'||(pago==='efectivo'?c.pago==='efectivo':(c.pago==='tarjeta'&&c.tarjeta===pago)))&&
+    (fac==='todas'||(fac==='con'?c.factura:!c.factura))&&
+    (!q||c.proveedor.toLowerCase().includes(q)||(c.nota||'').toLowerCase().includes(q))
+  );
+}
+function filaCompra(c,extra){
+  const pago=c.pago==='tarjeta'?(c.tarjeta||'Tarjeta'):'Efectivo';
+  return '<div class="item" data-id="'+c.id+'">'+(extra||'')+
+    '<div class="info" data-open="1"><div class="l1"><span class="p">'+esc(c.proveedor)+'</span><span>'+fmt(c.total)+'</span></div>'+
+    '<div class="l2"><span>'+fdate(c.fecha)+'</span><span class="tag">'+esc(pago)+'</span>'+
+    '<span class="tag '+(c.factura?'ok':'no')+'">'+(c.factura?'Con factura':'Sin factura')+'</span>'+
+    (c.tieneFoto?'<span>📷</span>':'')+'</div></div></div>';
+}
+function renderLista(){
+  const l=filtrar();
+  const tot=l.reduce((s,c)=>s+c.total,0);
+  const con=l.filter(c=>c.factura).reduce((s,c)=>s+c.total,0);
+  $('#lStats').innerHTML=
+    '<div class="stat big"><span>'+l.length+' compra'+(l.length===1?'':'s')+' · Total</span><b>'+fmt(tot)+'</b></div>'+
+    '<div class="stat"><span>Con factura</span><b>'+fmt(con)+'</b></div>'+
+    '<div class="stat"><span>Sin factura</span><b>'+fmt(tot-con)+'</b></div>';
+  $('#lLista').innerHTML=l.length?l.map(c=>filaCompra(c)).join(''):'<div class="vacio">No hay compras con estos filtros.</div>';
+}
+['lMes','lPago','lFac','lQ'].forEach(id=>$('#'+id).addEventListener('input',renderLista));
+$('#lTodo').addEventListener('click',()=>{$('#lMes').value='';renderLista();});
+$('#lLista').addEventListener('click',e=>{const it=e.target.closest('.item');if(it&&e.target.closest('[data-open]'))abrirDetalle(it.dataset.id);});
+
+/* ================= Detalle ================= */
+function cerrarSheet(){$('#ov').hidden=true;$('#sheet').innerHTML='';}
+$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')cerrarSheet();});
+async function abrirDetalle(id){
+  const c=compras.find(x=>x.id===id);if(!c)return;
+  const f=c.tieneFoto?await dbGet('fotos',id):null;
+  $('#sheet').innerHTML=
+    '<h2>'+esc(c.proveedor)+'</h2>'+
+    '<div class="kv"><span>Fecha</span><span>'+fdate(c.fecha)+'</span></div>'+
+    '<div class="kv"><span>Total</span><span><b>'+fmt(c.total)+'</b></span></div>'+
+    '<div class="kv"><span>Factura</span><span>'+(c.factura?'Sí':'No')+'</span></div>'+
+    '<div class="kv"><span>Pago</span><span>'+(c.pago==='tarjeta'?esc(c.tarjeta||'Tarjeta'):'Efectivo')+'</span></div>'+
+    (c.pago==='tarjeta'?'<div class="kv"><span>Cuadrada</span><span>'+(c.cuadrada?'Sí':'No')+'</span></div>':'')+
+    (c.nota?'<div class="kv"><span>Nota</span><span>'+esc(c.nota)+'</span></div>':'')+
+    (f?'<img class="foto" src="'+f.data+'" alt="Ticket">':'')+
+    (f?'<button class="btn sec sm" id="dGuardarFoto">Guardar foto en el teléfono</button>':'')+
+    '<div class="row"><button class="btn sm" id="dEditar">Editar</button><button class="btn danger sm" id="dBorrar">Eliminar</button></div>'+
+    '<button class="btn ghost sm" id="dCerrar">Cerrar</button>';
+  $('#ov').hidden=false;
+  $('#dCerrar').onclick=cerrarSheet;
+  $('#dEditar').onclick=()=>editar(id);
+  $('#dBorrar').onclick=async()=>{
+    if(!confirm('¿Eliminar esta compra? No se puede deshacer.'))return;
+    await dbDel('compras',id);await dbDel('fotos',id);await cargar();cerrarSheet();refrescarVista();toast('Compra eliminada');
+  };
+  if(f)$('#dGuardarFoto').onclick=async()=>guardarArchivo(await (await fetch(f.data)).blob(),nombreFoto(c));
+}
+function refrescarVista(){
+  const v=$$('.view').find(e=>!e.hidden);if(!v)return;
+  if(v.id==='v-lis')renderLista();if(v.id==='v-cua')renderCuadre();renderForm();
+}
+
+/* ================= Guardar / compartir archivos ================= */
+async function guardarArchivo(blob,nombre){
+  const file=new File([blob],nombre,{type:blob.type||'application/octet-stream'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file],title:nombre});return;}
+    catch(e){if(e&&e.name==='AbortError')return;}
+  }
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download=nombre;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+}
+function toCSV(list){
+  const h=['Fecha','Punto de abastecimiento','Total','Factura','Forma de pago','Tarjeta','Cuadrada','Nota','Archivo de foto'];
+  const rows=list.map(c=>[c.fecha,c.proveedor,c.total.toFixed(2),c.factura?'Sí':'No',c.pago==='tarjeta'?'Tarjeta':'Efectivo',c.tarjeta||'',c.pago==='tarjeta'?(c.cuadrada?'Sí':'No'):'',c.nota||'',c.tieneFoto?nombreFoto(c):'']);
+  return '﻿'+[h].concat(rows).map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+}
+function exportarCSV(list,nombre){
+  if(!list.length)return toast('No hay compras para exportar');
+  guardarArchivo(new Blob([toCSV(list)],{type:'text/csv'}),nombre+'_'+hoy()+'.csv');
+}
+$('#lCsv').addEventListener('click',()=>exportarCSV(filtrar(),'Compras_Jolgorio'));
+$('#lFotos').addEventListener('click',async()=>{
+  const l=filtrar().filter(c=>c.tieneFoto);
+  if(!l.length)return toast('No hay fotos en esta lista');
+  const files=[];
+  for(const c of l){const f=await dbGet('fotos',c.id);if(f){const b=await (await fetch(f.data)).blob();files.push(new File([b],nombreFoto(c),{type:'image/jpeg'}));}}
+  if(navigator.canShare&&navigator.canShare({files})){
+    try{await navigator.share({files,title:'Fotos de compras'});return;}catch(e){if(e&&e.name==='AbortError')return;}
+  }
+  toast('Tu navegador no deja compartir varias fotos; guárdalas una por una desde el detalle');
+});
+
+/* ================= Cuadre ================= */
+function iniciarCuadre(){
+  if(!C.tarjeta||!cfg.tarjetas.includes(C.tarjeta))C.tarjeta=cfg.tarjetas[0]||'';
+  if(!C.desde){const d=new Date();C.desde=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-01';}
+  if(!C.hasta)C.hasta=hoy();
+}
+function listaCuadre(){return compras.filter(c=>c.pago==='tarjeta'&&c.tarjeta===C.tarjeta&&c.fecha>=C.desde&&c.fecha<=C.hasta);}
+function renderCuadre(){
+  iniciarCuadre();
+  $('#cTarjeta').innerHTML=cfg.tarjetas.map(t=>'<option value="'+esc(t)+'"'+(t===C.tarjeta?' selected':'')+'>'+esc(t)+'</option>').join('');
+  $('#cDesde').value=C.desde;$('#cHasta').value=C.hasta;
+  const l=listaCuadre();
+  const tot=l.reduce((s,c)=>s+c.total,0);
+  const ok=l.filter(c=>c.cuadrada).reduce((s,c)=>s+c.total,0);
+  const est=parseMonto(C.estado);
+  let html='<div class="stat big"><span>'+l.length+' compra'+(l.length===1?' registrada':'s registradas')+' con '+esc(C.tarjeta)+'</span><b>'+fmt(tot)+'</b></div>'+
+    '<div class="stat"><span>Ya cuadradas</span><b style="color:var(--ok)">'+fmt(ok)+'</b></div>'+
+    '<div class="stat"><span>Pendientes</span><b style="color:var(--warn)">'+fmt(tot-ok)+'</b></div>';
+  if(isFinite(est)){
+    const dif=Math.round((est-tot)*100)/100;
+    html+='<div class="stat"><span>Estado de cuenta</span><b>'+fmt(est)+'</b></div>'+
+      '<div class="stat"><span>Diferencia (estado − registrado)</span><b style="color:'+(dif===0?'var(--ok)':'var(--danger)')+'">'+fmt(dif)+'</b></div>';
+  }
+  $('#cStats').innerHTML=html;
+  $('#cLista').innerHTML=l.length?l.map(c=>filaCompra(c,'<input type="checkbox" data-chk="'+c.id+'"'+(c.cuadrada?' checked':'')+'>')).join(''):'<div class="vacio">No hay compras con esta tarjeta en el periodo.</div>';
+}
+$('#cTarjeta').addEventListener('change',e=>{C.tarjeta=e.target.value;renderCuadre();});
+$('#cDesde').addEventListener('change',e=>{C.desde=e.target.value;renderCuadre();});
+$('#cHasta').addEventListener('change',e=>{C.hasta=e.target.value;renderCuadre();});
+$('#cEstado').addEventListener('input',e=>{C.estado=e.target.value;
+  // actualizar solo los totales para no perder el foco del teclado
+  const l=listaCuadre();const tot=l.reduce((s,c)=>s+c.total,0);const est=parseMonto(C.estado);
+  const prev=$('#cStats').querySelectorAll('.stat');
+  let extra=$('#cStats').querySelectorAll('[data-est]');extra.forEach(x=>x.remove());
+  if(isFinite(est)){
+    const dif=Math.round((est-tot)*100)/100;
+    $('#cStats').insertAdjacentHTML('beforeend','<div class="stat" data-est><span>Estado de cuenta</span><b>'+fmt(est)+'</b></div><div class="stat" data-est><span>Diferencia (estado − registrado)</span><b style="color:'+(dif===0?'var(--ok)':'var(--danger)')+'">'+fmt(dif)+'</b></div>');
+  }
+});
+$('#cLista').addEventListener('click',async e=>{
+  const chk=e.target.closest('[data-chk]');
+  if(chk){
+    const c=compras.find(x=>x.id===chk.dataset.chk);if(!c)return;
+    c.cuadrada=chk.checked;await dbPut('compras',c);renderCuadre();return;
+  }
+  const it=e.target.closest('.item');if(it&&e.target.closest('[data-open]'))abrirDetalle(it.dataset.id);
+});
+$('#cCsv').addEventListener('click',()=>exportarCSV(listaCuadre(),'Cuadre_'+slug(C.tarjeta)));
+
+/* ================= Ajustes ================= */
+function renderAjustes(){
+  $('#aTarjetas').innerHTML=cfg.tarjetas.map((t,i)=>'<span class="mini">'+esc(t)+'<button data-del-t="'+i+'" aria-label="Quitar">✕</button></span>').join('')||'<span class="nota">Sin tarjetas</span>';
+  $('#aProvs').innerHTML=cfg.proveedores.map((t,i)=>'<span class="mini">'+esc(t)+'<button data-del-p="'+i+'" aria-label="Quitar">✕</button></span>').join('')||'<span class="nota">Aún no agregas ninguno</span>';
+  infoAlmacen();
+}
+async function infoAlmacen(){
+  let t=compras.length+' compra'+(compras.length===1?'':'s')+' registradas, '+compras.filter(c=>c.tieneFoto).length+' con foto.';
+  try{
+    if(navigator.storage&&navigator.storage.estimate){const e=await navigator.storage.estimate();t+=' Espacio usado: '+(e.usage/1048576).toFixed(1)+' MB.';}
+    if(navigator.storage&&navigator.storage.persisted){const p=await navigator.storage.persisted();t+=p?' Almacenamiento protegido.':' El navegador podría borrar datos si no usas la app en mucho tiempo: guarda respaldos.';}
+  }catch(e){}
+  $('#aInfo').textContent=t;
+}
+$('#aTarjetas').addEventListener('click',e=>{const b=e.target.closest('[data-del-t]');if(!b)return;
+  const t=cfg.tarjetas[+b.dataset.delT];if(!confirm('¿Quitar "'+t+'" de la lista? Las compras ya registradas la conservan.'))return;
+  cfg.tarjetas.splice(+b.dataset.delT,1);saveCfg();renderAjustes();renderForm();opcionesPago($('#lPago'),'Todos');});
+$('#aProvs').addEventListener('click',e=>{const b=e.target.closest('[data-del-p]');if(!b)return;
+  cfg.proveedores.splice(+b.dataset.delP,1);saveCfg();renderAjustes();renderForm();});
+$('#aAddTarjeta').addEventListener('click',()=>{const v=$('#aNuevaTarjeta').value.trim();if(!v)return;
+  if(cfg.tarjetas.some(t=>t.toLowerCase()===v.toLowerCase()))return toast('Esa tarjeta ya existe');
+  cfg.tarjetas.push(v);saveCfg();$('#aNuevaTarjeta').value='';renderAjustes();renderForm();opcionesPago($('#lPago'),'Todos');});
+$('#aAddProv').addEventListener('click',()=>{const v=$('#aNuevoProv').value.trim();if(!v)return;
+  if(cfg.proveedores.some(t=>t.toLowerCase()===v.toLowerCase()))return toast('Ya está en la lista');
+  cfg.proveedores.push(v);saveCfg();$('#aNuevoProv').value='';renderAjustes();renderForm();});
+
+$('#aBackup').addEventListener('click',async()=>{
+  const fotos=await dbAll('fotos');
+  const data={app:'gastos-jolgorio',version:1,fecha:new Date().toISOString(),config:cfg,compras:compras,fotos:fotos};
+  guardarArchivo(new Blob([JSON.stringify(data)],{type:'application/json'}),'Respaldo_Gastos_Jolgorio_'+hoy()+'.json');
+});
+$('#aRestore').addEventListener('change',async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{
+    const d=JSON.parse(await f.text());
+    if(!d||d.app!=='gastos-jolgorio'||!Array.isArray(d.compras))throw new Error('formato');
+    if(!confirm('Esto reemplaza TODO lo que hay ahora en el teléfono por el respaldo ('+d.compras.length+' compras). ¿Continuar?'))return;
+    await dbClear('compras');await dbClear('fotos');
+    for(const c of d.compras)await dbPut('compras',c);
+    for(const x of (d.fotos||[]))await dbPut('fotos',x);
+    if(d.config){cfg=Object.assign(CFG_DEF(),d.config);saveCfg();aplicarTema();}
+    await cargar();opcionesPago($('#lPago'),'Todos');renderForm();renderAjustes();toast('Respaldo restaurado');
+  }catch(err){toast('Ese archivo no es un respaldo válido');}
+  e.target.value='';
+});
+
+/* ================= Tema ================= */
+$('#selTema').addEventListener('change',e=>{cfg.tema=e.target.value;saveCfg();aplicarTema();});
+
+/* ================= Ícono para pantalla de inicio ================= */
+function iconoApp(){
+  try{
+    const c=document.createElement('canvas');c.width=c.height=180;const x=c.getContext('2d');
+    const g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,'#ffb938');g.addColorStop(1,'#e8590c');
+    x.fillStyle=g;x.fillRect(0,0,180,180);
+    x.fillStyle='#fff';x.font='bold 96px -apple-system,Helvetica,Arial';x.textAlign='center';x.textBaseline='middle';x.fillText('$J',90,98);
+    const l=document.createElement('link');l.rel='apple-touch-icon';l.href=c.toDataURL('image/png');document.head.appendChild(l);
+  }catch(e){}
+}
+
+/* ================= Inicio ================= */
+(async function init(){
+  aplicarTema();iconoApp();
+  try{db=await openDB();}catch(e){document.querySelector('main').innerHTML='<div class="vacio">Este navegador no permite guardar datos (¿modo privado?). Ábrelo en Safari normal.</div>';return;}
+  if(navigator.storage&&navigator.storage.persist){try{await navigator.storage.persist();}catch(e){}}
+  await cargar();
+  $('#lMes').value=hoy().slice(0,7);
+  opcionesPago($('#lPago'),'Todos');
+  $('#fFecha').value=hoy();
+  renderForm();
+})();
+</script>
+</body>
+</html>
